@@ -1,0 +1,31 @@
+---
+# tasks file for rpmdiff
+- name: Include base .json and .jsn files in vars/all
+  include_vars:
+    #Changed for testing
+    #file: 'vars/yum_packages.json'
+    file: 'vars/yum_packages_short.json'
+    name: base_yum
+
+- name: Include base .json and .jsn files in vars/all
+  include_vars:
+    #Changed for testing
+    #file: 'vars/yum_packages.json'
+    file: 'vars/yum_packages_short_2.json'
+    name: yum_packages
+
+# REmoved for testing
+#- name: Packages Installed
+#  package:
+#    list: installed
+#  register: yum_packages
+
+
+- name: Test that my module works
+  combinejson:
+    base: "{{base_yum}}"
+    secondary: "{{yum_packages}}"
+  register: result
+
+- debug: msg="{{ result }}"
+- copy: content="{{ result | to_json }}" dest=/home/excalibrax/Documents/Metlife/combined.json

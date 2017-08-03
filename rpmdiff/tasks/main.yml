@@ -1,0 +1,39 @@
+---
+# tasks file for rpmdiff
+
+- name: Include all .json and .jsn files in vars/all and all nested directories (2.3)
+  include_vars:
+    file: 'vars/yum_packages.json'
+    name: base_yum
+
+- name: package_command
+  package:
+    list: installed
+  register: yum_packages
+
+- name: Setfact difference of installed
+  set_fact:
+    yum_new: "{{ yum_packages.results | map(attribute='name') | list}}"
+
+#- debug: msg="{{ base_yum.results }}"
+
+- name: Setfact difference of base vs installed
+  set_fact:
+    yum_diff: "{{ yum_new | difference(base_yum.results) }}"
+
+
+- debug: msg="{{ yum_diff }}"
+
+
+#How to use this data in with items referenced.
+#- debug:
+#    msg: "Name: {{item.name}} Version: {{item.version}}"
+#  with_items: "{{yum_diff}}"
+
+## extract list verbose to terse
+#- name: Setfact difference of base vs installed
+#  set_fact:
+#    yum_orig: "{{ base_yum.results | map(attribute='name') | list}}"
+
+## command to get base_yum file from a host
+#- copy: content="{{ yum_orig | to_json }}" dest=/home/ssulliva/Documents/Metlife/yum_packages.json

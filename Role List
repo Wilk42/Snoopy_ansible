@@ -1,0 +1,19 @@
+Roles:
+Concentrate on major file systems
+TBD:
+Packages with versions
+firewalls
+listeners
+Local users group passwords
+  password hashes
+cronjobs
+  What is set and path to script
+
+application keywords
+network auth
+
+
+Done:
+User and group difference
+service diff
+Basic Packages

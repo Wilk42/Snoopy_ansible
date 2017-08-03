@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  tasks:
+
+  - find:
+      paths: "~/"
+      file_type: directory
+      patterns: "EAP*"
+    register: find_result
+
+  - debug: msg="{{ find_result.files |  list }}"
+
+  - debug:
+      msg: "Path:{{item.path}} Attr:{{item.mode}}}"
+    with_items: "{{find_result.files}}"
+
+  - name: yum_command
+    yum:
+      list=installed
+    register: yum_packages
+
+  - copy: content="{{ yum_packages | to_json }}" dest=/yum_packages.json
+
+#  - debug:
+#      var: yum_packages
+
+  - name: test tree
+    shell: tree -p {{item.path}}
+    with_items: "{{find_result.files}}"
+    register: tree_result

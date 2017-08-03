@@ -1,0 +1,49 @@
+---
+# tasks file for rpmdiff
+
+- name: Include user json file for base
+  include_vars:
+    file: 'vars/users.json'
+    name: base_user
+
+- name: Include user json file for base
+  include_vars:
+    file: 'vars/groups.json'
+    name: base_group
+
+- name: get users
+  shell: 'cut -d: -f1 /etc/passwd'
+  register: username
+
+- name: get groups
+  shell: 'cut -d: -f1 /etc/group'
+  register: groupname
+
+#- debug: msg="{{ username.stdout_lines }}"
+#- debug: msg="{{ base_user.stdout_lines }}"
+
+- name: Setfact difference of user base vs found
+  set_fact:
+    usr_diff: "{{ username.stdout_lines | difference(base_user.stdout_lines) }}"
+
+- debug: msg="{{ usr_diff }}"
+
+- name: Setfact difference of user base vs found
+  set_fact:
+    grp_diff: "{{ groupname.stdout_lines | difference(base_group.stdout_lines) }}"
+
+- debug: msg="{{ grp_diff }}"
+
+
+##How to use this data in with items referenced.
+#- debug:
+#    msg: "Name: {{item.name}} Version: {{item.version}}"
+#  with_items: "{{yum_diff}}"
+
+
+## command to get base_users file from a host
+#  - name: get users
+#    shell: 'cut -d: -f1,3 /etc/passwd'
+#    register: username
+#
+#  - copy: content="{{ username | to_json }}" dest=dir/file.json
