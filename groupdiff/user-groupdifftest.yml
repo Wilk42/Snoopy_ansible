@@ -1,0 +1,5 @@
+---
+## sample playbook to run the role.
+- hosts: localhost
+  roles:
+     - groupdiff

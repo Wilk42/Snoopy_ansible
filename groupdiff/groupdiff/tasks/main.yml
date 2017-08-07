@@ -1,34 +1,17 @@
 ---
 # tasks file for rpmdiff
 
-- name: Include user json file for base
-  include_vars:
-    file: 'vars/users.json'
-    name: base_user
 
-- name: Include user json file for base
+- name: Include group json file for base
   include_vars:
     file: 'vars/groups.json'
     name: base_group
 
-- name: get users
-  #command for just usernames
-  #shell: 'cut -d: -f1 /et'
-  shell": 'cat /etc/shadow'
-  register: username
 
 - name: get groups
   shell: 'cut -d: -f1 /etc/group'
   register: groupname
 
-#- debug: msg="{{ username.stdout_lines }}"
-#- debug: msg="{{ base_user.stdout_lines }}"
-
-- name: Setfact difference of user base vs found
-  set_fact:
-    usr_diff: "{{ username.stdout_lines | difference(base_user.stdout_lines) }}"
-
-- debug: msg="{{ usr_diff }}"
 
 - name: Setfact difference of user base vs found
   set_fact:
@@ -36,6 +19,7 @@
 
 - debug: msg="{{ grp_diff }}"
 
+##insert task to upload this data to final destination.
 
 ##How to use this data in with items referenced.
 #- debug:
@@ -47,5 +31,5 @@
 #  - name: get users
 #    shell: 'cut -d: -f1,3 /etc/passwd'
 #    register: username
-#
+#     #command to save this to file. 
 #  - copy: content="{{ username | to_json }}" dest=dir/file.json

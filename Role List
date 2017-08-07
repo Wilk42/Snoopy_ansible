@@ -17,3 +17,7 @@ Done:
 User and group difference
 service diff
 Basic Packages
+
+
+Cron Notes
+Var Spool cron

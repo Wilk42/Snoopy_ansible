@@ -1,2 +1,8 @@
 ---
 # tasks file for cronlist
+
+- name: get firewall
+  shell: 'iptables -L -n'
+  register: iptables
+
+  - debug: msg={{ iptables }}

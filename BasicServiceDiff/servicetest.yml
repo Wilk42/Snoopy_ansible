@@ -4,6 +4,7 @@
   roles:
      - servicediff
 
+c
 
 # RHEL 7 systemctl list-unit-files
 # systemctl list-units -t service --full| cut -d' ' -f1| grep mypattern | while read s; do systemctl status $s; done
