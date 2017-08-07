@@ -1,9 +1,0 @@
----
-- hosts: localhost
-  tasks:
-
-  - name: get users
-    shell: 'cut -d: -f1 /etc/group'
-    register: userid
-
-  - copy: content="{{ userid | to_json }}" dest=/home/ssulliva/Documents/Metlife/groups.json
