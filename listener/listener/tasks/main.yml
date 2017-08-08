@@ -1,0 +1,12 @@
+---
+#tasks for finding getting data into Json from netstat
+
+
+- name: Netstat output
+  shell: 'netstat -tulpn | awk "{if (NR>2) {print}}"'
+  register: netstat
+
+- name: Convert Netstat output to Json
+  listener:
+    netstat: "{{netstat.stdout_lines | to_json}}"
+  register: result
