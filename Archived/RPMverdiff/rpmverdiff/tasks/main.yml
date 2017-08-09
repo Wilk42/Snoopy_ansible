@@ -1,0 +1,72 @@
+---
+# tasks file for rpmdiff
+
+- name: Include all .json and .jsn files in vars/all and all nested directories (2.3)
+  include_vars:
+    file: 'vars/yum_packages.json'
+    name: base_yum
+
+- name: Packages Installed
+  package:
+    list: installed
+  register: yum_packages
+
+
+##Set Facts for Packages
+- name: Setfact difference of installed
+  set_fact:
+    yum_new: "{{ yum_packages.results | map(attribute='name') | list}}"
+    yum__vers_new: "{{ yum_packages.results | map(attribute='version') | list}}"
+
+- name: Setfact Vanilla base Info
+  set_fact:
+    yum_base: "{{ base_yum.results | map(attribute='name') | list}}"
+    yum__vers_base: "{{ base_yum.results | map(attribute='version') | list}}"
+
+## combine the package and version
+- name: Combine the package and version
+  set_fact:
+    yum_base_combine: "{{ yum_base|zip(yum__vers_base)|list }}"
+    yum_new_combine: "{{ yum_new|zip(yum__vers_new)|list }}"
+
+#- name: create array of numbers to index
+#  debug: msg="do something"
+#  with_sequence: start=0 end={{ yum_base | length }}
+#  register: numbering
+
+#- name: build items list
+#  set_fact:
+#    yum_base_set: "{{yum_base_set|default([]) + [{'group': {'package': item[0], 'version': item[1]}}] }}"
+#  with_nested:
+#    - "{{ yum_new}}"
+#    - "{{ yum__vers_new}}"
+
+#- debug: msg="{{ numbering }}"
+
+
+## Add Index to the package and version
+- name: Add Index to the package and version
+  set_fact:
+    yum_new_indexed: "{{ item|zip(yum_new_combine)|list }}"
+    with_sequence: start=0 end={{ yum_base | length }}
+
+## diff of package names
+- name: Setfact difference of base vs installed
+  set_fact:
+    yum_diff: "{{ yum_new | difference(yum_base) }}"
+
+- debug: msg="{{ yum_new_indexed }}"
+
+
+#How to use this data in with items referenced.
+#- debug:
+#    msg: "Name: {{item.name}} Version: {{item.version}}"
+#  with_items: "{{yum_diff}}"
+
+## extract list verbose to terse
+#- name: Setfact difference of base vs installed
+#  set_fact:
+#    yum_orig: "{{ base_yum.results | map(attribute='name') | list}}"
+
+## command to get base_yum file from a host
+#- copy: content="{{ yum_orig | to_json }}" dest=/home/ssulliva/Documents/Metlife/yum_packages.json

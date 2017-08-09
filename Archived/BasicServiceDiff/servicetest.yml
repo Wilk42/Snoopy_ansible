@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  become: true
+  roles:
+     - servicediff
+
+
+
+# RHEL 7 systemctl list-unit-files
+# systemctl list-units -t service --full| cut -d' ' -f1| grep mypattern | while read s; do systemctl status $s; done
+# systemctl list-unit-files --state=enabled | cut -d ' ' -f 1

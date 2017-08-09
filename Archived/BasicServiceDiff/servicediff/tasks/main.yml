@@ -1,0 +1,33 @@
+---
+# tasks file for rpmdiff
+
+- name: Include user json file for base
+  include_vars:
+    file: 'vars/services.json'
+    name: base_services
+
+- name: get services
+  shell: 'chkconfig --list | grep $(runlevel | awk ''{ print $2}''):on | cut -d '' '' -f 1'
+  register: services
+
+- debug: msg="{{ services.stdout_lines }}"
+
+- name: Setfact difference of services base vs found
+  set_fact:
+    services_diff: "{{ services.stdout_lines | difference(base_services.stdout_lines) }}"
+
+- debug: msg="{{ services_diff }}"
+
+
+##How to use this data in with items referenced.
+#- debug:
+#    msg: "Name: {{item.name}} Version: {{item.version}}"
+#  with_items: "{{yum_diff}}"
+
+
+## command to get base_users file from a host
+#  - name: get users
+#    shell: 'cut -d: -f1,3 /etc/passwd'
+#    register: username
+#
+#  - copy: content="{{ username | to_json }}" dest=dir/file.json

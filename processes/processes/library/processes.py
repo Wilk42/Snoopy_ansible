@@ -23,24 +23,24 @@ ANSIBLE_METADATA = {'metadata_version': '1.0',
 
 DOCUMENTATION = '''
 ---
-module: listner
-short_description: take output from netstat to json
+module: ps_aux
+short_description: take output from ps aux to json
 version_added: "2.4"
 author: Sean S <ssulliva@redhat.com>
 description:
-  - This module takes the input from of output from the shell command:
-  'netstat -tulpn | awk "{if (NR>2) {print}}"'
+  - This module takes the input in for the from of output from the shell command:
+  ' ps aux '
   It then takes the that data and converts it into a JSON format.
 '''
 
 EXAMPLES = '''
-- name: Netstat output
-  shell: 'netstat -tulpn | awk "{if (NR>2) {print}}"'
-  register: netstat
+- name: PS Aux output
+  shell: 'ps aux '
+  register: ps_aux
 
-- name: Convert Netstat output to Json
+- name: Convert ps_aux output to Json
   listener:
-    netstat: "{{netstat.stdout_lines | to_json}}"
+    ps_aux: "{{ps_aux.stdout_lines | to_json}}"
   register: result
 '''
 
@@ -80,58 +80,43 @@ import requests
 entryList = []
 
 
-def parserow(netstatDatastr):
-    #Split the string into a list
-    netstatData = netstatDatastr.split()
-    #Define Dicts for 8 entries
-    tmpDict ={}
+def parserow(processDatastr):
+    # Split the string into a list
+    processData = processDatastr.split()
+    # Define Dicts for 8 entries
+    tmpDict = {}
 
-    #Split the LocalIP/Port into a list
-    tmpLocal = netstatData[3].rsplit(':',1)
-    #Split the ForeignIP/Port into a list
-    tmpForeign = netstatData[4].rsplit(':',1)
-    #Define the 8 dicts based on their netstat column names
-    tmpDict["protocol"] = netstatData[0]
-    tmpDict["local_address"] = tmpLocal[0]
-    tmpDict["local_port"] = tmpLocal[1]
-    tmpDict["foreign_address"] = tmpForeign[0]
-    tmpDict["foreign_port"] = tmpForeign[1]
-    ##Test 5th element for alphabet char, if alpha its a State otherwise a PID
-    if str(netstatData[5])[:2].isalpha():
-       #We have a State, that data
-       tmpDict["state"] = netstatData[5]
-       #Split the PID/process on the /
-       tmpPID = netstatData[6].split('/')
-       tmpDict["pid"] = tmpPID[0]
-       tmpDict["process"] = tmpPID[1]
-    else:
-       #We have a PID load that data
-       tmpDict["state"] = ""
-       tmpPID = netstatData[5].split('/')
-       tmpDict["pid"] = tmpPID[0]
-       tmpDict["process"] = tmpPID[1]
-    #append all items to the list
+
+
+    # Define the 8 dicts based on their netstat column names
+    tmpDict["USER"] = processData[0]
+    tmpDict["PID"] = processData[1]
+    tmpDict["CPU_Perc"] = processData[2]
+    tmpDict["MEM_Perc"] = processData[3]
+    tmpDict["TTY"] = processData[6]
+    tmpDict["STAT"] = processData[7]
+    tmpDict["COMMAND"] = processData[10]
+    # append all items to the list
     entryList.append(tmpDict)
-    #print tmpDict
 
 
 def main():
     module = AnsibleModule(
         argument_spec=dict(
-            netstat=dict(required=True, type='str'),
+            processes=dict(required=True, type='str'),
         )
     )
 
     if module.check_mode:
         module.exit_json(changed=False)
     # import data from input
-    netstat = (module.params['netstat'])
+    processes = (module.params['processes'])
 
     # Process each line of the input
-    for i in range(len(json.loads(netstat))):
-        parserow((json.loads(netstat)[i]).encode('utf-8'))
+    for i in range(len(json.loads(processes))):
+        parserow((json.loads(processes)[i]).encode('utf-8'))
     # Exit module with JSON output
-    module.exit_json(listeners=(entryList), changed=False)
+    module.exit_json(processes=(entryList), changed=False)
 
 
 if __name__ == '__main__':

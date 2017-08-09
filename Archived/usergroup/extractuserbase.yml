@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+
+  - name: get users
+    shell: 'cat /etc/shadow'
+    register: user
+
+  - copy: content="{{ user | to_json }}" dest=/home/excalibrax/Documents/Metlife/users.json

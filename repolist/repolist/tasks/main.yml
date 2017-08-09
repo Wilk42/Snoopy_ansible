@@ -1,0 +1,32 @@
+---
+# tasks file for rpmdiff
+
+#Get yum repolist, remove column headers and last line that gives sum.
+# Remove the head portion to make work with dnf command
+- name: get repolist
+  shell: 'yum repolist |  awk "{if (NR>3) {print}}" | head -n -1 '
+  register: repoList
+
+- debug: msg="{{ repoList.stdout_lines }}"
+
+- name: Convert repolist output to Json
+  repolist:
+    repolist: "{{repoList.stdout_lines | to_json}}"
+  register: result
+
+- debug: msg="{{ result }}"
+
+##insert task to upload this data to final destination.
+
+##How to use this data in with items referenced.
+#- debug:
+#    msg: "Name: {{item.name}} Version: {{item.version}}"
+#  with_items: "{{yum_diff}}"
+
+
+## command to get base_users file from a host
+#  - name: get users
+#    shell: 'cut -d: -f1,3 /etc/passwd'
+#    register: username
+#     #command to save this to file.
+#  - copy: content="{{ username | to_json }}" dest=dir/file.json

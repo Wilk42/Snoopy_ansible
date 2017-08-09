@@ -1,0 +1,5 @@
+---
+## sample playbook to run the role.
+- hosts: virtual
+  roles:
+     - repolist

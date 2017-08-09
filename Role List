@@ -1,23 +1,63 @@
 Roles:
 Concentrate on major file systems
 TBD:
-Packages with versions
 firewalls
-listeners
-Local users group passwords
-  password hashes
 cronjobs
   What is set and path to script
+processes
+USER       PID %CPU %MEM     TTY      STAT  COMMAND
+
 
 application keywords
 network auth
 
 
 Done:
+user with hash difference
+separate group difference
 User and group difference
 service diff
 Basic Packages
+Listener
+Repository list
 
 
 Cron Notes
 Var Spool cron
+  cd /var/spool/cron/ && grep . *
+
+
+Firewalls
+  Ports and protocols
+
+
+Listners
+  lsof -i
+  netstat -vat
+  netstat --all --programs --numeric-ports
+  sudo lsof -i  | awk '{print $5 " " $8 " " $9}'
+  netstat -tulpn
+  netstat -tulpn | gawk '{match($4, /(.*):(.*)/, m); print m[1], m[2]}' | column -t
+  # each column
+  #protocol
+  netstat -tulpn | awk '{if (NR>2) {print}}' | awk '{print $1}'
+  #local address
+  netstat -tulpn | gawk '{match($4, /(.*):(.*)/, m); print m[1]}' | column -t
+  #Local port
+  netstat -tulpn | gawk '{match($4, /(.*):(.*)/, m); print m[2]}' | column -t
+  #foriegn address
+  netstat -tulpn | gawk '{match($5, /(.*):(.*)/, m); print m[1]}' | column -t
+  #foriegn port
+  netstat -tulpn | gawk '{match($5, /(.*):(.*)/, m); print m[2]}' | column -t
+  #State
+  #PID
+  #Program Name
+
+  protocol
+  local_address
+  local_port
+  foreign_address
+  foreign_port
+  state
+  pid
+  program_name

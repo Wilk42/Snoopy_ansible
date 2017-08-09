@@ -1,0 +1,15 @@
+{'listeners':
+  [
+    {"protocol": "tcp", "local_port": "53", "process": "dnsmasq", "pid": "2121", "foreign_port": "*", "state": "LISTEN", "foreign_address": "0.0.0.0", "local_address": "192.168.124.1"},
+    {"protocol": "tcp", "local_port": "631", "process": "cupsd", "pid": "7591", "foreign_port": "*", "state": "LISTEN", "foreign_address": "0.0.0.0", "local_address": "127.0.0.1"},
+    {"protocol": "tcp6", "local_port": "", "process": "cupsd", "pid": "7591", "foreign_port": "", "state": "LISTEN", "foreign_address": "", "local_address": ""},
+    {"protocol": "udp", "local_port": "5353", "process": "avahi-daemon:", "pid": "1329", "foreign_port": "*", "state": "", "foreign_address": "0.0.0.0", "local_address": "0.0.0.0"},
+    {"protocol": "udp", "local_port": "40475", "process": "avahi-daemon:", "pid": "1329", "foreign_port": "*", "state": "", "foreign_address": "0.0.0.0", "local_address": "0.0.0.0"},
+    {"protocol": "udp", "local_port": "53", "process": "dnsmasq", "pid": "2121", "foreign_port": "*", "state": "", "foreign_address": "0.0.0.0", "local_address": "192.168.124.1"},
+    {"protocol": "udp", "local_port": "67", "process": "dnsmasq", "pid": "2121", "foreign_port": "*", "state": "", "foreign_address": "0.0.0.0", "local_address": "0.0.0.0"},
+    {"protocol": "udp", "local_port": "68", "process": "dhclient", "pid": "7751", "foreign_port": "*", "state": "", "foreign_address": "0.0.0.0", "local_address": "0.0.0.0"},
+    {"protocol": "udp", "local_port": "323", "process": "chronyd", "pid": "1449", "foreign_port": "*", "state": "", "foreign_address": "0.0.0.0", "local_address": "127.0.0.1"},
+    {"protocol": "udp6", "local_port": "", "process": "avahi-daemon:", "pid": "1329", "foreign_port": "", "state": "", "foreign_address": "", "local_address": ""},
+    {"protocol": "udp6", "local_port": "", "process": "chronyd", "pid": "1449", "foreign_port": "", "state": "", "foreign_address": "", "local_address": ""},
+    {"protocol": "udp6", "local_port": "", "process": "avahi-daemon:", "pid": "1329", "foreign_port": "", "state": "", "foreign_address": "", "local_address": ""}
+    ]}

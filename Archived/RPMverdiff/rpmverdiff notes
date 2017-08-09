@@ -1,0 +1,12 @@
+Command "/usr/bin/python2 -u -c "import setuptools, tokenize;__file__='/tmp/pip-build-D0ok8j/MarkupSafe/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record /tmp/pip-83rfeC-record/install-record.txt --single-version-externally-managed --compile" failed with error code 1 in /tmp/pip-build-D0ok8j/MarkupSafe/
+
+
+- name: "Display all cluster names"
+  debug: var=item
+  with_items: "{{yum_packages|json_query('results.[1].name') | list}}"
+
+- name: "Display Packages and versions"
+  debug: var=item
+  with_items: "{{domain_definition|json_query(package_name_query)}}"
+  vars:
+    package_name_query: "JSON.results[*].{name: name, version: version}"

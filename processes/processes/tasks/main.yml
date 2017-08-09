@@ -1,0 +1,19 @@
+---
+#tasks for finding getting data into Json from netstat
+
+
+- name: PS Aux output
+  shell: 'ps aux '
+  register: ps_aux
+
+- debug: msg="{{ ps_aux.stdout_lines | to_json }}"
+
+- copy: content="{{ ps_aux.stdout_lines | to_json }}" dest=/home/excalibrax/Documents/Metlife/process.json
+
+
+- name: Convert ps_aux output to Json
+  processes:
+    processes: "{{ps_aux.stdout_lines | to_json}}"
+  register: result
+
+- debug: msg="{{ result }}"

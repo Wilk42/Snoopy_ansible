@@ -1,0 +1,38 @@
+---
+#tasks for finding differences in users including hashes.
+#if wanting to find just usernames change the shell command in the get users task
+
+- name: Include user json file for base
+  include_vars:
+    file: 'vars/users.json'
+    name: base_user
+
+- name: get users
+  #command for just usernames
+  #shell: 'cut -d: -f1 /et'
+  shell: 'cat /etc/shadow'
+  register: username
+
+- debug: msg="{{ username.stdout_lines }}"
+
+- name: Setfact difference of user base vs found
+  set_fact:
+    usr_diff: "{{ username.stdout_lines | difference(base_user.stdout_lines) }}"
+
+#- debug: msg="{{ usr_diff }}"
+
+#insert module for uploading to webserver here
+
+
+##How to use this data in with items referenced.
+#- debug:
+#    msg: "Name: {{item.name}} Version: {{item.version}}"
+#  with_items: "{{yum_diff}}"
+
+
+## command to get base_users file from a host
+#  - name: get users
+#    shell: 'cat /etc/shadow'
+#    register: username
+#
+#  - copy: content="{{ username | to_json }}" dest=dir/file.json

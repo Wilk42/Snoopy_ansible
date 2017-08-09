@@ -54,7 +54,7 @@ netstat = open('netstat.json', 'r').read()
 #tmpstring = str(json.loads(netstat)[11])
 
 for i in range(len(json.loads(netstat))):
-    parserow(str(json.loads(netstat)[i]))
+    parserow((json.loads(netstat)[i]).encode('utf-8'))
 
 
 #create Dict, append list to the Dict
