@@ -1,5 +1,5 @@
 ---
-- hosts: localhost
+- hosts: virtual
   #become: yes
   roles:
      - processes

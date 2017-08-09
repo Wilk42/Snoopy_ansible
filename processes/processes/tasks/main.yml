@@ -8,8 +8,6 @@
 
 - debug: msg="{{ ps_aux.stdout_lines | to_json }}"
 
-- copy: content="{{ ps_aux.stdout_lines | to_json }}" dest=/home/excalibrax/Documents/Metlife/process.json
-
 
 - name: Convert ps_aux output to Json
   processes:

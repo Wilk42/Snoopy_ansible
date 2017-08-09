@@ -72,10 +72,13 @@ RETURN = '''{
 
 '''
 
-import json
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
 from ansible.module_utils.basic import *
 from itertools import chain
-import requests
 
 entryList = []
 
