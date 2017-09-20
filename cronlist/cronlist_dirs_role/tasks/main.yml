@@ -1,0 +1,10 @@
+---
+#tasks for finding getting data into Json from cron list
+
+- name: Find the cron dirs
+  find:
+    paths: /etc/cron.hourly, etc/cron.daily,/etc/cron.weekly,/etc/cron.monthly,/etc/cron.d
+    recurse: yes
+  register: files
+
+- debug: msg="{{ files.files | map(attribute='path') | list }}"

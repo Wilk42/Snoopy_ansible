@@ -4,12 +4,27 @@ TBD:
 firewalls
 cronjobs
   What is set and path to script
-processes
-USER       PID %CPU %MEM     TTY      STAT  COMMAND
 
+Contents of:
+/etc/crontab
+/var/spool/cron/*
+Directory listing of:
+/etc/cron.hourly
+/etc/cron.daily
+/etc/cron.weekly
+/etc/cron.monthly
+/etc/cron.d
+cron_jobs:
+  {
+  "cron.d" : "file 1, file2, file3"
+  "cron.hourly" : "file 1, file2, file3"
+  }
+  {
+  "crontab": [row1,
+              row2,
+              row3]
+  }
 
-application keywords
-network auth
 
 
 Done:
@@ -20,7 +35,7 @@ service diff
 Basic Packages
 Listener
 Repository list
-
+processes
 
 Cron Notes
 Var Spool cron

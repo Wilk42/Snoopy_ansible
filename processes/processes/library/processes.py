@@ -98,7 +98,7 @@ def parserow(processDatastr):
     tmpDict["MEM_Perc"] = processData[3]
     tmpDict["TTY"] = processData[6]
     tmpDict["STAT"] = processData[7]
-    tmpDict["COMMAND"] = processData[10]
+    tmpDict["COMMAND"] = processData[10:]
     # append all items to the list
     entryList.append(tmpDict)
 

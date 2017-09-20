@@ -10,3 +10,5 @@
   listener:
     netstat: "{{netstat.stdout_lines | to_json}}"
   register: result
+
+- debug: msg="{{ result }}"
